@@ -1,11 +1,13 @@
 package edu.cmu.cs.lti.oaqa.graphqa.db;
 
+import java.util.Map;
 import java.util.Set;
 
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.neo4j.Neo4jGraph;
 
-import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants;
+import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants.Domain;
+import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants.Schema;
 import edu.cmu.cs.lti.oaqa.graphqa.db.crawler.DataSourceCrawler;
 import edu.cmu.cs.lti.oaqa.graphqa.db.exception.GraphBuilderException;
 import edu.cmu.cs.lti.oaqa.graphqa.db.scraper.DataScraper;
@@ -60,7 +62,7 @@ public class KnowledgeGraphBuilder {
 		// Crawl the URL to get the list of websites to visit
 		System.out.println("Retrieving links from the web page...");
 		DataSourceCrawler crawler = new DataSourceCrawler();
-		Set<String> urls = crawler.getLinks(url);
+		Map<Schema, Set<String>> urls = crawler.getLinks(url);
 		System.out.println("Number of URLs retrieved: " + urls.size());
 
 		// Create a graph in the provided location
@@ -69,9 +71,9 @@ public class KnowledgeGraphBuilder {
 		// Scrape the content from the provided URLs
 		DataScraper scraper = new DataScraper();
 		if (url.contains(".edu")) {
-			scraper.scrapeData(g, GraphBuilderConstants.Domain.edu, urls);
+			scraper.scrapeData(g, Domain.edu, urls);
 		} else if (url.contains(".com")) {
-			scraper.scrapeData(g, GraphBuilderConstants.Domain.com, urls);
+			scraper.scrapeData(g, Domain.com, urls);
 		} else {
 			throw new GraphBuilderException("Website domain is not supported");
 		}

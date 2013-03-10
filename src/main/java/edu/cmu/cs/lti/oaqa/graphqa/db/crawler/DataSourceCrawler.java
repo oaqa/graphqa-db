@@ -1,6 +1,8 @@
 package edu.cmu.cs.lti.oaqa.graphqa.db.crawler;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.jsoup.Jsoup;
@@ -8,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants.Schema;
 import edu.cmu.cs.lti.oaqa.graphqa.db.crawler.utils.DataSourceCrawlerUtils;
 import edu.cmu.cs.lti.oaqa.graphqa.db.exception.GraphBuilderException;
 
@@ -20,6 +23,17 @@ import edu.cmu.cs.lti.oaqa.graphqa.db.exception.GraphBuilderException;
  */
 public class DataSourceCrawler {
 
+	private Map<Schema, Set<String>> urls;
+	private Set<String> crawledURLs;
+
+	public DataSourceCrawler() {
+		urls = new HashMap<Schema, Set<String>>();
+		urls.put(Schema.professor, new HashSet<String>());
+		urls.put(Schema.course, new HashSet<String>());
+
+		crawledURLs = new HashSet<String>();
+	}
+
 	/**
 	 * Returns the list of URLs present in the input URL domain by crawling
 	 * 
@@ -29,36 +43,35 @@ public class DataSourceCrawler {
 	 * @throws GraphBuilderException
 	 *             Thrown when there is any error during crawling
 	 */
-	public Set<String> getLinks(String url) throws GraphBuilderException {
-		Set<String> links = new HashSet<String>();
+	public Map<Schema, Set<String>> getLinks(String url)
+			throws GraphBuilderException {
 
 		try {
 
 			if (url == null || url.length() == 0)
-				return links;
+				return urls;
 
 			if (!url.startsWith("http://"))
-				return links;
+				return urls;
 
-			addLinksToCollection(links,
-					DataSourceCrawlerUtils.getDomainName(url), url);
+			addLinksToCollection(DataSourceCrawlerUtils.getDomainName(url), url);
 		} catch (Exception e) {
 			throw new GraphBuilderException(e);
 		}
-		return links;
+		return urls;
 	}
 
-	private void addLinksToCollection(Set<String> links, String domainURL,
-			String url) {
+	private void addLinksToCollection(String domainURL, String url) {
+
+		if (crawledURLs.contains(url))
+			return;
+		else
+			crawledURLs.add(url);
 
 		Document doc = null;
 		try {
 			doc = Jsoup.connect(url).get();
 		} catch (Exception e) {
-			// System.out.println("Ignoring IOException while connecting to "
-			// + url + ": " + e.getMessage());
-			System.out.println("Removing new link: " + url);
-			links.remove(url);
 			return;
 		}
 
@@ -68,8 +81,6 @@ public class DataSourceCrawler {
 			Element elem = elems.get(i);
 			String attr = elem.attr("href");
 			String nextLink = new String();
-
-			// System.out.println("In URL " + url + ", href found: " + attr);
 
 			if (attr == null || attr.length() == 0)
 				continue;
@@ -116,10 +127,9 @@ public class DataSourceCrawler {
 			if (nextLink.indexOf('?') != -1)
 				continue;
 
-			if (!links.contains(nextLink)) {
-				links.add(nextLink);
-				System.out.println("Adding new link: " + nextLink);
-				addLinksToCollection(links, domainURL, nextLink);
+			if (!DataSourceCrawlerUtils.addURLToValidSchemaSet(urls, nextLink)) {
+				System.out.println("Crawling link: " + nextLink);
+				addLinksToCollection(domainURL, nextLink);
 			}
 		}
 	}

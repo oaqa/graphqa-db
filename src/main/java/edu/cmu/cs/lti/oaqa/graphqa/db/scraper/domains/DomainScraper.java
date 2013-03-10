@@ -1,9 +1,11 @@
 package edu.cmu.cs.lti.oaqa.graphqa.db.scraper.domains;
 
+import java.util.Map;
 import java.util.Set;
 
 import com.tinkerpop.blueprints.Graph;
 
+import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants.Schema;
 import edu.cmu.cs.lti.oaqa.graphqa.db.exception.GraphBuilderException;
 
 /**
@@ -23,6 +25,6 @@ public abstract class DomainScraper {
 	 *            Provided input URLs
 	 * @throws GraphBuilderException
 	 */
-	public abstract void scrapeData(Graph g, Set<String> urls)
+	public abstract void scrapeData(Graph g, Map<Schema, Set<String>> urls)
 			throws GraphBuilderException;
 }

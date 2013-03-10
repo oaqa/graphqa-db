@@ -18,6 +18,7 @@ public class CourseNodeScraper {
 			throws GraphBuilderException {
 
 		// Extract course nodes into graph
+		System.out.println("hello");
 
 	}
 }

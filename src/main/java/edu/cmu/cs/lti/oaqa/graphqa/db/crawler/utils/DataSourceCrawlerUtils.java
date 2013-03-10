@@ -1,5 +1,13 @@
 package edu.cmu.cs.lti.oaqa.graphqa.db.crawler.utils;
 
+import java.util.Map;
+import java.util.Set;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants.Schema;
+
 /**
  * Utility methods used by the crawler
  * 
@@ -95,6 +103,49 @@ public class DataSourceCrawlerUtils {
 			endIndex = url.length();
 
 		return url.substring(0, endIndex);
+	}
+
+	/**
+	 * Adds the provided URL into appropriate schema bucket based on the name of
+	 * the URL and title of its html page
+	 * 
+	 * @param urls
+	 *            URL buckets
+	 * @param url
+	 *            URL to be added
+	 * @return true if the URL is successfully added or if the URL is invalid,
+	 *         false otherwise. If true is returned, the URL will not be crawled
+	 *         further
+	 */
+	public static boolean addURLToValidSchemaSet(Map<Schema, Set<String>> urls,
+			String url) {
+
+		Document doc = null;
+		try {
+			doc = Jsoup.connect(url).get();
+		} catch (Exception e) {
+			return true;
+		}
+
+		String title = doc.title().toLowerCase();
+
+		if (title.contains("professor") || title.contains("faculty")
+				|| title.contains("teacher") || url.contains("professor")
+				|| url.contains("faculty") || url.contains("teacher")) {
+			Set<String> list = urls.get(Schema.professor);
+			if (!list.contains(url))
+				list.add(url);
+			return true;
+		}
+
+		if (title.contains("course") || url.contains("course")) {
+			Set<String> list = urls.get(Schema.course);
+			if (!list.contains(url))
+				list.add(url);
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
