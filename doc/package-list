@@ -1,0 +1,11 @@
+edu.cmu.cs.lti.oaqa.graphqa.db
+edu.cmu.cs.lti.oaqa.graphqa.db.constants
+edu.cmu.cs.lti.oaqa.graphqa.db.crawler
+edu.cmu.cs.lti.oaqa.graphqa.db.crawler.utils
+edu.cmu.cs.lti.oaqa.graphqa.db.exception
+edu.cmu.cs.lti.oaqa.graphqa.db.scraper
+edu.cmu.cs.lti.oaqa.graphqa.db.scraper.domains
+edu.cmu.cs.lti.oaqa.graphqa.db.scraper.domains.com
+edu.cmu.cs.lti.oaqa.graphqa.db.scraper.domains.edu
+edu.cmu.cs.lti.oaqa.graphqa.db.scraper.domains.edu.components
+edu.cmu.cs.lti.oaqa.graphqa.db.scraper.domains.edu.schema
