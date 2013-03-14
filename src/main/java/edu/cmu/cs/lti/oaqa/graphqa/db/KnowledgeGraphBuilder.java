@@ -7,7 +7,7 @@ import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.neo4j.Neo4jGraph;
 
 import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants.Domain;
-import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants.Schema;
+import edu.cmu.cs.lti.oaqa.graphqa.db.schema.SchemaConstants.Schema;
 import edu.cmu.cs.lti.oaqa.graphqa.db.crawler.DataSourceCrawler;
 import edu.cmu.cs.lti.oaqa.graphqa.db.exception.GraphBuilderException;
 import edu.cmu.cs.lti.oaqa.graphqa.db.scraper.DataScraper;

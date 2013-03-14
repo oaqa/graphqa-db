@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.tinkerpop.blueprints.Graph;
 
-import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants.Schema;
+import edu.cmu.cs.lti.oaqa.graphqa.db.schema.SchemaConstants.Schema;
 import edu.cmu.cs.lti.oaqa.graphqa.db.exception.GraphBuilderException;
 import edu.cmu.cs.lti.oaqa.graphqa.db.scraper.domains.DomainScraper;
 

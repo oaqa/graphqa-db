@@ -1,5 +1,8 @@
 package edu.cmu.cs.lti.oaqa.graphqa.db.crawler;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -10,9 +13,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants.Schema;
+import edu.cmu.cs.lti.oaqa.graphqa.db.schema.SchemaConstants.Schema;
 import edu.cmu.cs.lti.oaqa.graphqa.db.crawler.utils.DataSourceCrawlerUtils;
 import edu.cmu.cs.lti.oaqa.graphqa.db.exception.GraphBuilderException;
+import edu.cmu.cs.lti.oaqa.graphqa.db.schema.SchemaUtils;
 
 /**
  * Crawls the web site located at the input URL and returns the list of URLs
@@ -28,18 +32,17 @@ public class DataSourceCrawler {
 
 	public DataSourceCrawler() {
 		urls = new HashMap<Schema, Set<String>>();
-		urls.put(Schema.professor, new HashSet<String>());
-		urls.put(Schema.course, new HashSet<String>());
-
+		SchemaUtils.populateCrawlerMap(urls);
 		crawledURLs = new HashSet<String>();
 	}
 
 	/**
-	 * Returns the list of URLs present in the input URL domain by crawling
+	 * Performs web crawling on the provided url and returns a map of schema
+	 * element and their corresponding URLs
 	 * 
 	 * @param url
 	 *            Input URL
-	 * @return Set of URLs in the domain
+	 * @return Map of URLs in the domain
 	 * @throws GraphBuilderException
 	 *             Thrown when there is any error during crawling
 	 */
@@ -59,6 +62,40 @@ public class DataSourceCrawler {
 			throw new GraphBuilderException(e);
 		}
 		return urls;
+	}
+
+	/**
+	 * 
+	 * Performs web crawling on the provided url and stores a map of schema
+	 * element and their corresponding URLs in the file provided
+	 * 
+	 * @param url
+	 *            Input URL that will be crawled
+	 * @param fileName
+	 *            Output file where the map contents will be written
+	 * @throws GraphBuilderException
+	 *             Thrown when there is any error during crawling
+	 */
+	public void getLinks(String url, String fileName)
+			throws GraphBuilderException {
+
+		getLinks(url);
+
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
+
+			for (Schema s : urls.keySet()) {
+				Set<String> urlList = urls.get(s);
+				for (String str : urlList) {
+					bw.write(s + " " + str + "\n");
+				}
+			}
+
+			bw.close();
+		} catch (IOException e) {
+			throw new GraphBuilderException(e);
+		}
+
 	}
 
 	private void addLinksToCollection(String domainURL, String url) {
@@ -84,6 +121,8 @@ public class DataSourceCrawler {
 
 			if (attr == null || attr.length() == 0)
 				continue;
+			else
+				attr = attr.trim();
 
 			if (attr.startsWith("http")) {
 

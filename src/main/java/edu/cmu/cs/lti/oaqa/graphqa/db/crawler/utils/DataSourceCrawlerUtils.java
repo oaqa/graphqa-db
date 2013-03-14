@@ -6,7 +6,8 @@ import java.util.Set;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants.Schema;
+import edu.cmu.cs.lti.oaqa.graphqa.db.schema.SchemaConstants;
+import edu.cmu.cs.lti.oaqa.graphqa.db.schema.SchemaConstants.Schema;
 
 /**
  * Utility methods used by the crawler
@@ -17,7 +18,9 @@ import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants.Schema;
 public class DataSourceCrawlerUtils {
 
 	/**
-	 * Returns the domain name of the provided URL
+	 * Returns the domain name of the provided URL<br/>
+	 * If the provided URL is "http://www.cs.cmu.edu", the returned string will
+	 * be "cs.cmu.edu"
 	 * 
 	 * @param url
 	 *            URL provided
@@ -129,16 +132,22 @@ public class DataSourceCrawlerUtils {
 
 		String title = doc.title().toLowerCase();
 
-		if (title.contains("professor") || title.contains("faculty")
-				|| title.contains("teacher") || url.contains("professor")
-				|| url.contains("faculty") || url.contains("teacher")) {
+		// Add the link to professor bucket if applicable
+		if (title.contains(SchemaConstants.PROFESSOR_ENTITY_SYNONYM_PROFESSOR)
+				|| title.contains(SchemaConstants.PROFESSOR_ENTITY_SYNONYM_FACULTY)
+				|| title.contains(SchemaConstants.PROFESSOR_ENTITY_SYNONYM_TEACHER)
+				|| url.contains(SchemaConstants.PROFESSOR_ENTITY_SYNONYM_PROFESSOR)
+				|| url.contains(SchemaConstants.PROFESSOR_ENTITY_SYNONYM_FACULTY)
+				|| url.contains(SchemaConstants.PROFESSOR_ENTITY_SYNONYM_TEACHER)) {
 			Set<String> list = urls.get(Schema.professor);
 			if (!list.contains(url))
 				list.add(url);
 			return true;
 		}
 
-		if (title.contains("course") || url.contains("course")) {
+		// Add the link to course bucket if applicable
+		if (title.contains(SchemaConstants.COURSE_ENTITY_SYNONYM_COURSE)
+				|| url.contains(SchemaConstants.COURSE_ENTITY_SYNONYM_COURSE)) {
 			Set<String> list = urls.get(Schema.course);
 			if (!list.contains(url))
 				list.add(url);

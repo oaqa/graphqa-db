@@ -16,11 +16,4 @@ public class GraphBuilderConstants {
 		com, edu
 	};
 
-	/**
-	 * Represents the schema whose elements are used as keys by the crawler
-	 * 
-	 */
-	public static enum Schema {
-		professor, course, department, program, others
-	}
 }
