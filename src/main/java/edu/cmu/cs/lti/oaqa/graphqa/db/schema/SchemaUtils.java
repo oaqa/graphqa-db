@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import edu.cmu.cs.lti.oaqa.graphqa.db.schema.SchemaConstants.Schema;
+import edu.cmu.cs.lti.oaqa.graphqa.db.schema.Schema;
 
 /**
  * Provides utility methods for schema related operations

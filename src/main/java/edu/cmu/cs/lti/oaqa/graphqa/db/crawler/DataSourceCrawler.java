@@ -13,7 +13,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import edu.cmu.cs.lti.oaqa.graphqa.db.schema.SchemaConstants.Schema;
+import edu.cmu.cs.lti.oaqa.graphqa.db.schema.Schema;
 import edu.cmu.cs.lti.oaqa.graphqa.db.crawler.utils.DataSourceCrawlerUtils;
 import edu.cmu.cs.lti.oaqa.graphqa.db.exception.GraphBuilderException;
 import edu.cmu.cs.lti.oaqa.graphqa.db.schema.SchemaUtils;

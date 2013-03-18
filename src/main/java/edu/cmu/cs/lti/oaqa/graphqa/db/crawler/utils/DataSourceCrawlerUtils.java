@@ -7,7 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import edu.cmu.cs.lti.oaqa.graphqa.db.schema.SchemaConstants;
-import edu.cmu.cs.lti.oaqa.graphqa.db.schema.SchemaConstants.Schema;
+import edu.cmu.cs.lti.oaqa.graphqa.db.schema.Schema;
 
 /**
  * Utility methods used by the crawler

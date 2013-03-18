@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 import com.tinkerpop.blueprints.Graph;
 
 import edu.cmu.cs.lti.oaqa.graphqa.db.constants.GraphBuilderConstants.Domain;
-import edu.cmu.cs.lti.oaqa.graphqa.db.schema.SchemaConstants.Schema;
+import edu.cmu.cs.lti.oaqa.graphqa.db.schema.Schema;
 import edu.cmu.cs.lti.oaqa.graphqa.db.exception.GraphBuilderException;
 import edu.cmu.cs.lti.oaqa.graphqa.db.scraper.domains.com.ComDomainScraper;
 import edu.cmu.cs.lti.oaqa.graphqa.db.scraper.domains.edu.EduDomainScraper;
