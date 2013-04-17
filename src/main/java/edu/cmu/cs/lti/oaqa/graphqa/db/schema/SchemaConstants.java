@@ -8,12 +8,12 @@ package edu.cmu.cs.lti.oaqa.graphqa.db.schema;
  */
 public class SchemaConstants {
 
-	// Synonyms for professor entity used by crawler module
+	// Synonyms for professor entity used by crawler
 	public static String PROFESSOR_ENTITY_SYNONYM_PROFESSOR = "professor";
 	public static String PROFESSOR_ENTITY_SYNONYM_TEACHER = "teacher";
 	public static String PROFESSOR_ENTITY_SYNONYM_FACULTY = "faculty";
 
-	// Synonyms for course entity used by crawler module
+	// Synonyms for course entity used by crawler
 	public static String COURSE_ENTITY_SYNONYM_COURSE = "course";
 
 }
