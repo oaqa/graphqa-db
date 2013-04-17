@@ -18,6 +18,14 @@ public class Course {
 	private String location;
 	private String professor;
 
+	public static String COURSE_NODE_TYPE = "course";
+	public static String COURSE_NAME = "course_name";
+	public static String COURSE_CODE = "course_code";
+	public static String COURSE_START_TIME = "course_start_time";
+	public static String COURSE_END_TIME = "course_end_time";
+	public static String COURSE_LOCATION = "course_location";
+	public static String COURSE_INSTRUCTOR = "course_instructor";
+
 	public String getName() {
 		return name;
 	}
@@ -66,16 +74,19 @@ public class Course {
 		this.professor = professor;
 	}
 
-	public Vertex addToGraph(Graph g) {
-		Vertex v = g.addVertex(null);
-		v.setProperty("name", this.name);
-		v.setProperty("code", this.code);
-		v.setProperty("start_time", this.start_time);
-		v.setProperty("end_time", this.end_time);
-		v.setProperty("location", this.location);
-		v.setProperty("professor", this.professor);
-
-		return v;
+	public void addToGraph(Vertex v) {
+		v.setProperty("type", COURSE_NODE_TYPE);
+		v.setProperty(COURSE_CODE, this.getCode());
+		if (this.getName() != null)
+			v.setProperty(COURSE_NAME, this.getName());
+		if (this.getStart_time() != null)
+			v.setProperty(COURSE_START_TIME, this.getStart_time());
+		if (this.getEnd_time() != null)
+			v.setProperty(COURSE_END_TIME, this.getEnd_time());
+		if (this.getLocation() != null)
+			v.setProperty(COURSE_LOCATION, this.getLocation());
+		if (this.getProfessor() != null) {
+			v.setProperty(COURSE_INSTRUCTOR, this.getProfessor());
+		}
 	}
-
 }

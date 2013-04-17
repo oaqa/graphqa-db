@@ -22,5 +22,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Puneet/juno_workspace/Libraries/JsonRpc2-Base/jsonrpc2-base-1.31.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

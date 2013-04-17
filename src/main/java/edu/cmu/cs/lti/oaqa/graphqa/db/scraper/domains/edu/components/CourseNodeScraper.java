@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.Vertex;
 
 import edu.cmu.cs.lti.oaqa.graphqa.db.crawler.utils.DataSourceCrawlerUtils;
 import edu.cmu.cs.lti.oaqa.graphqa.db.exception.GraphBuilderException;
@@ -67,6 +68,8 @@ public class CourseNodeScraper {
 					+ courses.get(i).getStart_time() + ", End_Time: "
 					+ courses.get(i).getEnd_time());
 		}
+
+		addCoursesToGraph(g);
 	}
 
 	/**
@@ -276,8 +279,8 @@ public class CourseNodeScraper {
 			Element link = links.get(i);
 
 			// The link should have the string "course" in its text
-			if (!link.text().toLowerCase().contains("course"))
-				continue;
+			// if (!link.text().toLowerCase().contains("course"))
+			// continue;
 
 			String href = link.attr("href");
 			if (href == null || href.length() == 0)
@@ -339,5 +342,57 @@ public class CourseNodeScraper {
 		}
 
 		return courseCodePresent;
+	}
+
+	private void addCoursesToGraph(Graph g) {
+
+		for (int i = 0; i < courses.size(); i++) {
+			Course c = courses.get(i);
+
+			Vertex v = getCourseNode(g, c.getCode());
+			if (v == null)
+				v = g.addVertex(null);
+			System.out
+					.println("Adding course " + c.getName() + " to the graph");
+
+			c.addToGraph(v);
+
+			if (c.getProfessor() != null) {
+
+				Vertex profNode = getCourseInstructorNode(g, c.getProfessor());
+
+				if (profNode == null)
+					continue;
+
+				System.out.println("Adding edge for course " + c.getName()
+						+ " and prof " + c.getProfessor());
+				g.addEdge(null, profNode, v, "teach");
+			}
+		}
+
+	}
+
+	private Vertex getCourseNode(Graph g, String courseCode) {
+
+		for (Vertex v : g.getVertices("type", Course.COURSE_NODE_TYPE)) {
+			if (((String) v.getProperty(Course.COURSE_CODE))
+					.equalsIgnoreCase(courseCode))
+				return v;
+		}
+		return null;
+	}
+
+	private Vertex getCourseInstructorNode(Graph g, String profName) {
+		System.out.println(profName);
+		for (Vertex v : g.getVertices()) {
+			String profNodeName = (String) v.getProperty("name");
+			System.out.println(profNodeName);
+			if (profNodeName != null
+					&& (profNodeName.contains(profName) || profName
+							.contains(profNodeName)))
+				return v;
+		}
+
+		return null;
 	}
 }
