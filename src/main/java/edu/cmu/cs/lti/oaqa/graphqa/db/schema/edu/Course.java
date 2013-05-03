@@ -1,6 +1,5 @@
 package edu.cmu.cs.lti.oaqa.graphqa.db.schema.edu;
 
-import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 
 /**

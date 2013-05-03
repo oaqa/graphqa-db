@@ -23,7 +23,8 @@ public class ScrapeHelper {
 
 		System.out.println("currently operating --> " + url);
 
-		Document doc;// need to decide if the content is in the page
+		// need to decide if the content is in the page
+		Document doc;
 
 		try {
 			Connection c = Jsoup.connect(url);
@@ -46,17 +47,21 @@ public class ScrapeHelper {
 		prof.setPhone2(def);
 		// ===============================================
 		String email = NewEmail.getEmail(doc, url, person);
+		System.out.println(email);
 		prof.setEmail(email);
 
 		// ===============================================
 
 		String name = NewName.getName(doc, url, person);
+		System.out.println(name);
 		prof.setName(name);
 
 		// ===============================================
 		String page = "";
 		if (url.contains("~")) {
 			page = url;
+			prof.setPage(page);
+			System.out.println(page);
 		} else {
 			Elements links = doc.getElementsByAttribute("href");
 			for (int j = 0; j < links.size(); j++) {
@@ -66,10 +71,10 @@ public class ScrapeHelper {
 				if (!tmpLink.contains("~"))
 					continue;
 				pLinks.add(tmpLink);
-				System.out.println(tmpLink);
-				System.out.println("========================");
+				// System.out.println(tmpLink);
+				// System.out.println("========================");
 			}
-			System.out.println(pLinks.size());
+			System.out.println("links size = " + pLinks.size());
 		}
 
 		// ===============================================
@@ -77,7 +82,7 @@ public class ScrapeHelper {
 		Set<String> phones = new HashSet<String>();
 		phones = NewPhones.getPhones(doc, url);
 		if (phones != null) {
-			// System.out.println(phones);
+			System.out.println(phones);
 			// if (phones.size()>0){
 			// countTotal++;
 			// }
@@ -100,30 +105,15 @@ public class ScrapeHelper {
 			// countTotal++;
 			prof.setJobTitle(titleStr);
 		}
+		System.out.println(titleStr);
 
-		Set<String> officeSet = new HashSet<String>();
-		officeSet = NewOffice.getOffice(doc, url);
-		if (officeSet != null) {
-			// System.out.println(officeSet);
-			if (officeSet.size() > 0) {
-			}
-
-			Iterator<String> ite = officeSet.iterator();
-			int tmp = 0;
-			while (ite.hasNext() && tmp < 2) {
-				if (tmp == 0)
-					prof.setOffice(ite.next());
-				else
-					prof.setOffice2(ite.next());
-				tmp++;
-				// System.out.println(ite.next());
-			}
+		String office = NewOffice.getOffice(doc, url);
+		if (office != null) {
+			prof.setOffice(office);
 		}
 
 		prof.addToGraph(name, g);
 		System.out.println("done");
 		return pLinks;
-
 	}
-
 }

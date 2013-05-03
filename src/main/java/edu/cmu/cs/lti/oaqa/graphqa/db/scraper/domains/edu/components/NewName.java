@@ -5,6 +5,8 @@ import org.jsoup.nodes.Document;
 public class NewName {
 
 	public static String getName(Document doc, String url, String person) {
+		// the regex of name is hard, but the name is likely to appear in the
+		// title field of the webpage and it may be in the anchor text of a link
 		String title = "";
 		String returnTitle = "";
 		try {
@@ -40,7 +42,8 @@ public class NewName {
 		}
 		if (end == -1)
 			end = title.length();
-		if (title.indexOf("elcome") != -1) {// if there is "Welcome to" in title
+		// if there is "Welcome to" in title
+		if (title.indexOf("elcome") != -1) {
 			begin = title.indexOf("elcome") + 10;
 		}
 		// System.out.println("begin = "+begin);
@@ -50,11 +53,15 @@ public class NewName {
 		}
 		String name = title.substring(begin, end);
 		if (url.contains("~") || url.contains("user")) {
+			// if the page is a personal page, then search for title field and
+			// trim the title and save it
 			String[] names = name.split(" ");
 			if (names.length > 4)
 				name = "N/A";
 			returnTitle = name;
 		} else {
+			// if the page is an official page, then it is hard to use regex to
+			// match the name, use anchor text instead
 			returnTitle = person;
 		}
 		return returnTitle;
