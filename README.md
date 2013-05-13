@@ -6,6 +6,7 @@ This repository consists of a knowledge graph builder that extracts information 
 A sample invocation for this operation is provided below:-
 
 KnowledgeGraphBuilder k = new KnowledgeGraphBuilder();
+
 k.createGraph(domain, graphLocation);
 
 where 'domain' is the website URL and 'graphLocation' is the location in the file system where the graph files are created.
