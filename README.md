@@ -1,11 +1,11 @@
-graphqa
-=======
+graphqa-db
+==========
 
-This repository consists of two modules :-
+This repository consists of a knowledge graph builder that extracts information from a given website URL and stores it in a graph structured format.
 
-1. Knowledge Graph Builder
-2. Graph Query Handler
+A sample invocation for this operation is provided below:-
 
-The knowledge graph builder takes a website URL and graph database location as input. It extracts data from the website using web crawling and web scraping techniques and creates a graph database at the mentioned location.
+KnowledgeGraphBuilder k = new KnowledgeGraphBuilder();
+k.createGraph(domain, graphLocation);
 
-The graph query handler takes in key terms, forms a query and issues the query on the graph database. The results are retrieved and returned.
+where 'domain' is the website URL and 'graphLocation' is the location in the file system where the graph files are created.
